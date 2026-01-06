@@ -1,0 +1,679 @@
+-- Haiiz Kaitun Ultimate | Full Auto System
+-- Version: Auto Edition | Everything Auto On Start
+-- YouTube: Haiiz dep trai
+
+-- =============================================
+-- 📦 SERVICES
+-- =============================================
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Workspace = game:GetService("Workspace")
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local TeleportService = game:GetService("TeleportService")
+local Lighting = game:GetService("Lighting")
+local HttpService = game:GetService("HttpService")
+
+-- Player
+local Player = Players.LocalPlayer
+local Character = Player.Character or Player.CharacterAdded:Wait()
+local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+
+-- Anti AFK
+local VirtualUser = game:GetService("VirtualUser")
+Player.Idled:Connect(function()
+    VirtualUser:CaptureController()
+    VirtualUser:ClickButton2(Vector2.new())
+end)
+
+-- =============================================
+-- ⚙️ AUTO CONFIG - TẤT CẢ BẬT SẴN
+-- =============================================
+_G.AutoFarm = true
+_G.AutoStats = true
+_G.AutoMelee = true
+_G.AutoRaid = true
+_G.AutoRandomFruit = true
+_G.AutoElite = true
+_G.AutoSoulGuitar = true
+_G.AutoCDK = true
+_G.AutoBoneFarm = true
+_G.AutoEctoplasmFarm = true
+_G.AutoCodeRedeem = true
+_G.AutoSeaHop = true
+
+-- Stats Priority
+_G.StatsPriority = {"Melee", "Health", "Sword", "Defense", "Fruit", "Gun"}
+
+-- Raid Fruits
+_G.SelectedFruits = {"Rocket", "Spin", "Blade", "Spring", "Flame", "Ice", "Dark", "Light", "Magma"}
+
+-- Melee Order
+_G.MeleeOrder = {
+    "Dark Step",        -- 150,000 Beli
+    "Electric",         -- 500,000 Beli  
+    "Water Kung Fu",    -- 750,000 Beli
+    "Dragon Breath",    -- 1,500 Fragments
+    "Superhuman",       -- 3,000,000 Beli
+    "Death Step",       -- 2,500,000 Beli + 5,000 Frag
+    "Sharkman Karate",  -- 2,500,000 Beli + 5,000 Frag
+    "Dragon Talon",     -- 3,000,000 Beli + 5,000 Frag
+    "Electric Claw",    -- 3,000,000 Beli + 5,000 Frag
+    "Godhuman",         -- 5,000,000 Beli + 5,000 Frag
+    "Sanguine Art"      -- 5,000,000 Beli + 5,000 Frag
+}
+
+-- =============================================
+-- 🧠 CORE FUNCTIONS
+-- =============================================
+function CheckSea()
+    local PlaceID = game.PlaceId
+    if PlaceID == 2753915549 then return 1
+    elseif PlaceID == 4442272183 then return 2
+    elseif PlaceID == 7449423635 then return 3 end
+    return 0
+end
+
+function GetPlayerLevel()
+    return Player.Data.Level.Value
+end
+
+function GetBeli()
+    return Player.Data.Beli.Value
+end
+
+function GetFragments()
+    return Player.Data.Fragments.Value
+end
+
+function TeleportTo(CFrame)
+    pcall(function()
+        if Character and Character:FindFirstChild("HumanoidRootPart") then
+            Character.HumanoidRootPart.CFrame = CFrame
+        end
+    end)
+end
+
+function EquipTool(ToolName)
+    pcall(function()
+        for _, v in pairs(Player.Backpack:GetChildren()) do
+            if v.Name == ToolName then
+                v.Parent = Character
+                break
+            end
+        end
+    end)
+end
+
+function Attack()
+    VirtualInputManager:SendKeyEvent(true, "X", false, nil)
+    task.wait(0.1)
+    VirtualInputManager:SendKeyEvent(false, "X", false, nil)
+end
+
+-- =============================================
+-- 🎯 AUTO FARM LEVEL SYSTEM
+-- =============================================
+function AutoFarmLevel()
+    spawn(function()
+        while _G.AutoFarm do
+            local Level = GetPlayerLevel()
+            local Sea = CheckSea()
+            
+            -- Refresh character reference
+            if not Character or not Character:FindFirstChild("HumanoidRootPart") then
+                Character = Player.Character or Player.CharacterAdded:Wait()
+                HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+            end
+            
+            if Sea == 1 then -- Level 1-699
+                if Level <= 10 then
+                    TeleportTo(CFrame.new(-1058.93, 15.13, 1546.95)) -- Bandit
+                elseif Level <= 20 then
+                    TeleportTo(CFrame.new(-1234.46, 21.89, 1559.26)) -- Gorilla
+                elseif Level <= 30 then
+                    TeleportTo(CFrame.new(-1142.19, 15.13, 4352.36)) -- Brute
+                elseif Level <= 40 then
+                    TeleportTo(CFrame.new(-1460.93, 14.13, 4331.69)) -- Monkey
+                elseif Level <= 60 then
+                    TeleportTo(CFrame.new(-1059.59, 14.13, 4399.74)) -- Military Soldier
+                elseif Level <= 75 then
+                    TeleportTo(CFrame.new(-2314.32, 73.60, -2577.89)) -- Military Spy
+                elseif Level <= 90 then
+                    TeleportTo(CFrame.new(-5436.21, 313.79, -2931.33)) -- Officer
+                elseif Level <= 100 then
+                    TeleportTo(CFrame.new(-5815.12, 50.65, -4467.28)) -- Shanks
+                elseif Level <= 125 then
+                    TeleportTo(CFrame.new(-1024.52, 15.13, 4321.69)) -- Gang Member
+                elseif Level <= 150 then
+                    TeleportTo(CFrame.new(-1546.53, 13.13, 4304.69)) -- Swan Pirate
+                elseif Level <= 175 then
+                    TeleportTo(CFrame.new(-1245.36, 13.13, 4662.59)) -- Factory Staff
+                elseif Level <= 200 then
+                    TeleportTo(CFrame.new(292.88, 40.13, -5564.08)) -- Marine Lieutenant
+                elseif Level <= 225 then
+                    TeleportTo(CFrame.new(-1074.65, 13.13, 4086.42)) -- Marine Captain
+                elseif Level <= 250 then
+                    TeleportTo(CFrame.new(244.17, 73.65, -5256.65)) -- Veteran
+                elseif Level <= 275 then
+                    TeleportTo(CFrame.new(-1610.15, 13.13, 4832.21)) -- Sky Bandit
+                elseif Level <= 300 then
+                    TeleportTo(CFrame.new(-5017.12, 28.68, -2836.87)) -- Dark Master
+                elseif Level <= 325 then
+                    TeleportTo(CFrame.new(5207.07, 5.15, 745.43)) -- Toga Warrior
+                elseif Level <= 350 then
+                    TeleportTo(CFrame.new(4839.77, 4.32, 1663.62)) -- Royal Soldier
+                elseif Level <= 375 then
+                    TeleportTo(CFrame.new(-6035.68, 15.23, -4956.98)) -- Shanda
+                elseif Level <= 400 then
+                    TeleportTo(CFrame.new(5229.33, 12.32, -1330.92)) -- Factory Staff (Midnight)
+                elseif Level <= 450 then
+                    TeleportTo(CFrame.new(5492.79, 28.32, -688.18)) -- Marine Lieutenant (Midnight)
+                elseif Level <= 500 then
+                    TeleportTo(CFrame.new(2917.82, 12.32, 3927.08)) -- Military Soldier (Midnight)
+                elseif Level <= 550 then
+                    TeleportTo(CFrame.new(5534.92, 12.32, 100.18)) -- Military Spy (Midnight)
+                elseif Level <= 600 then
+                    TeleportTo(CFrame.new(6747.92, 12.32, 325.18)) -- Fishman Warrior
+                elseif Level <= 650 then
+                    TeleportTo(CFrame.new(6107.92, 12.32, -213.82)) -- Fishman Commando
+                elseif Level <= 699 then
+                    TeleportTo(CFrame.new(2903.92, 12.32, -3727.82)) -- God's Guard
+                elseif Level >= 700 then
+                    -- Auto go to Sea 2
+                    TeleportTo(CFrame.new(-6431.72, 250.68, -4493.79))
+                end
+                
+            elseif Sea == 2 then -- Level 700-1499
+                if Level <= 724 then
+                    TeleportTo(CFrame.new(-64.92, 70.32, 4473.34)) -- Desert Bandits
+                elseif Level <= 774 then
+                    TeleportTo(CFrame.new(1607.87, 3.74, 1645.51)) -- Snow Bandits
+                elseif Level <= 799 then
+                    TeleportTo(CFrame.new(383.07, 45.92, -3394.12)) -- Snowman
+                elseif Level <= 874 then
+                    TeleportTo(CFrame.new(-1092.29, 44.53, 4941.13)) -- Chief Petty Officer
+                elseif Level <= 899 then
+                    TeleportTo(CFrame.new(-1611.92, 6.92, 4830.81)) -- Sky Bandits
+                elseif Level <= 949 then
+                    TeleportTo(CFrame.new(-5017.12, 28.68, -2836.87)) -- Dark Master
+                elseif Level <= 974 then
+                    TeleportTo(CFrame.new(3524.69, 7.32, -2941.18)) -- Toga Warrior
+                elseif Level <= 999 then
+                    TeleportTo(CFrame.new(4839.77, 4.32, 1663.62)) -- Royal Soldier
+                elseif Level <= 1049 then
+                    TeleportTo(CFrame.new(-6035.68, 15.23, -4956.98)) -- Shanda
+                elseif Level <= 1099 then
+                    TeleportTo(CFrame.new(5229.33, 12.32, -1330.92)) -- Factory Staff
+                elseif Level <= 1149 then
+                    TeleportTo(CFrame.new(5492.79, 28.32, -688.18)) -- Marine Lieutenant
+                elseif Level <= 1199 then
+                    TeleportTo(CFrame.new(2917.82, 12.32, 3927.08)) -- Military Soldier
+                elseif Level <= 1249 then
+                    TeleportTo(CFrame.new(5534.92, 12.32, 100.18)) -- Military Spy
+                elseif Level <= 1274 then
+                    TeleportTo(CFrame.new(6747.92, 12.32, 325.18)) -- Fishman Warrior
+                elseif Level <= 1299 then
+                    TeleportTo(CFrame.new(6107.92, 12.32, -213.82)) -- Fishman Commando
+                elseif Level <= 1324 then
+                    TeleportTo(CFrame.new(2903.92, 12.32, -3727.82)) -- God's Guard
+                elseif Level <= 1349 then
+                    TeleportTo(CFrame.new(5230.92, 12.32, 182.18)) -- Warden
+                elseif Level <= 1374 then
+                    TeleportTo(CFrame.new(4742.92, 12.32, -2253.82)) -- Chief Warden
+                elseif Level <= 1424 then
+                    TeleportTo(CFrame.new(5207.92, 12.32, 4702.18)) -- Yeti
+                elseif Level <= 1449 then
+                    TeleportTo(CFrame.new(5747.92, 12.32, 456.18)) -- Mobs Leader
+                elseif Level <= 1474 then
+                    TeleportTo(CFrame.new(2889.92, 12.32, -3691.82)) -- Arctic Warrior
+                elseif Level <= 1499 then
+                    TeleportTo(CFrame.new(6118.92, 12.32, -214.82)) -- Snow Lurker
+                elseif Level >= 1500 then
+                    -- Auto go to Sea 3
+                    TeleportTo(CFrame.new(-6431.72, 250.68, -4493.79))
+                end
+                
+            elseif Sea == 3 then -- Level 1500-2800
+                if Level <= 1524 then
+                    TeleportTo(CFrame.new(-380.48, 73.04, 5727.34)) -- Pirate Millionaire
+                elseif Level <= 1574 then
+                    TeleportTo(CFrame.new(-250.86, 73.04, 6342.24)) -- Dragon Crew Warrior
+                elseif Level <= 1599 then
+                    TeleportTo(CFrame.new(-561.54, 73.04, 6876.58)) -- Dragon Crew Archer
+                elseif Level <= 1624 then
+                    TeleportTo(CFrame.new(861.82, 125.22, 28277.57)) -- Female Islander
+                elseif Level <= 1649 then
+                    TeleportTo(CFrame.new(1450.42, 125.22, 28153.65)) -- Giant Islander
+                elseif Level <= 1674 then
+                    TeleportTo(CFrame.new(1357.44, 125.22, 28473.99)) -- Marine Commodore
+                elseif Level <= 1724 then
+                    TeleportTo(CFrame.new(1683.97, 125.22, 28389.43)) -- Marine Rear Admiral
+                elseif Level <= 1774 then
+                    TeleportTo(CFrame.new(2908.88, 423.85, 20619.22)) -- Fishman Raider
+                elseif Level <= 1799 then
+                    TeleportTo(CFrame.new(3178.72, 423.85, 20783.22)) -- Fishman Captain
+                elseif Level <= 1824 then
+                    TeleportTo(CFrame.new(-10994.68, 354.04, -1026.42)) -- Forest Pirate
+                elseif Level <= 1849 then
+                    TeleportTo(CFrame.new(-13301.74, 405.88, -9530.71)) -- Mythological Pirate
+                elseif Level <= 1899 then
+                    TeleportTo(CFrame.new(-13486.83, 332.42, -8997.34)) -- Jungle Pirate
+                elseif Level <= 1924 then
+                    TeleportTo(CFrame.new(-12087.62, 551.66, -10850.64)) -- Musketeer Pirate
+                elseif Level <= 1974 then
+                    TeleportTo(CFrame.new(-9481.89, 142.14, 5563.56)) -- Reborn Skeleton
+                elseif Level <= 1999 then
+                    TeleportTo(CFrame.new(-8763.96, 142.14, 6179.34)) -- Living Zombie
+                elseif Level <= 2024 then
+                    TeleportTo(CFrame.new(-10112.79, 151.76, 5934.33)) -- Demonic Soul
+                elseif Level <= 2074 then
+                    TeleportTo(CFrame.new(-9314.73, 7.00, 4471.47)) -- Posessed Mummy
+                elseif Level <= 2099 then
+                    TeleportTo(CFrame.new(-12244.68, 491.97, -10376.14)) -- Peanut Scout
+                elseif Level <= 2124 then
+                    TeleportTo(CFrame.new(-13612.04, 491.97, -10023.74)) -- Peanut President
+                elseif Level <= 2149 then
+                    TeleportTo(CFrame.new(-12142.89, 491.97, -16485.91)) -- Ice Cream Chef
+                elseif Level <= 2199 then
+                    TeleportTo(CFrame.new(-13723.59, 491.97, -15984.64)) -- Ice Cream Commander
+                elseif Level <= 2224 then
+                    TeleportTo(CFrame.new(-13482.32, 491.97, -14482.86)) -- Cookie Crafter
+                elseif Level <= 2249 then
+                    TeleportTo(CFrame.new(-13488.67, 491.97, -13979.13)) -- Cake Guard
+                elseif Level <= 2299 then
+                    TeleportTo(CFrame.new(-13789.53, 491.97, -12994.86)) -- Candy Pirate
+                elseif Level <= 2324 then
+                    TeleportTo(CFrame.new(-13294.75, 491.97, -14569.66)) -- Chocolate Bar Battler
+                elseif Level <= 2374 then
+                    TeleportTo(CFrame.new(-12484.87, 491.97, -14236.91)) -- Sweet Thief
+                elseif Level <= 2399 then
+                    TeleportTo(CFrame.new(-13781.85, 491.97, -14972.83)) -- Coco Warrior
+                elseif Level <= 2424 then
+                    TeleportTo(CFrame.new(-12674.64, 491.97, -14861.14)) -- Waffle Don
+                elseif Level <= 2474 then
+                    TeleportTo(CFrame.new(-12930.54, 491.97, -15304.86)) -- Gummy Warrior
+                elseif Level <= 2499 then
+                    TeleportTo(CFrame.new(-12277.89, 491.97, -14432.64)) -- Honey Raider
+                elseif Level <= 2549 then
+                    TeleportTo(CFrame.new(-11787.62, 491.97, -11562.64)) -- Dough King Warrior
+                elseif Level <= 2599 then
+                    TeleportTo(CFrame.new(-11627.42, 491.97, -12148.94)) -- Dough King
+                elseif Level <= 2649 then
+                    TeleportTo(CFrame.new(-12453.68, 491.97, -13660.42)) -- Cursed Captain
+                elseif Level <= 2699 then
+                    TeleportTo(CFrame.new(-13610.74, 491.97, -13295.86)) -- Ship Steerer
+                elseif Level <= 2749 then
+                    TeleportTo(CFrame.new(-13204.32, 491.97, -12577.64)) -- Ship Engineer
+                elseif Level <= 2799 then
+                    TeleportTo(CFrame.new(-12782.89, 491.97, -12980.94)) -- Ship Cleaner
+                elseif Level >= 2800 then
+                    _G.AutoFarm = false
+                    print("🎉 Max Level 2800 Reached!")
+                end
+            end
+            
+            -- Attack nearby NPCs
+            AttackNPCs()
+            task.wait(0.1)
+        end
+    end)
+end
+
+function AttackNPCs()
+    pcall(function()
+        if Workspace:FindFirstChild("Enemies") then
+            for _, npc in pairs(Workspace.Enemies:GetChildren()) do
+                if npc:FindFirstChild("Humanoid") and npc.Humanoid.Health > 0 and
+                   npc:FindFirstChild("HumanoidRootPart") then
+                   
+                    local distance = (HumanoidRootPart.Position - npc.HumanoidRootPart.Position).Magnitude
+                    if distance < 50 then
+                        TeleportTo(npc.HumanoidRootPart.CFrame * CFrame.new(0, 0, 5))
+                        EquipTool("Melee")
+                        Attack()
+                        break
+                    end
+                end
+            end
+        end
+    end)
+end
+
+-- =============================================
+-- 📊 AUTO STATS UPGRADE
+-- =============================================
+function AutoStats()
+    spawn(function()
+        while _G.AutoStats do
+            pcall(function()
+                local points = Player.Data.Points.Value
+                if points > 0 then
+                    for _, stat in pairs(_G.StatsPriority) do
+                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AddPoint", stat, 1)
+                        task.wait(0.1)
+                        points = points - 1
+                        if points <= 0 then break end
+                    end
+                end
+            end)
+            task.wait(5)
+        end
+    end)
+end
+
+-- =============================================
+-- ⚔️ AUTO MELEE PURCHASE
+-- =============================================
+function GetMeleeMastery(MeleeName)
+    for _, v in pairs(Player.Backpack:GetChildren()) do
+        if v.Name == MeleeName and v:FindFirstChild("Level") then
+            return v.Level.Value
+        end
+    end
+    return 0
+end
+
+function HasMelee(MeleeName)
+    for _, v in pairs(Player.Backpack:GetChildren()) do
+        if v.Name == MeleeName then
+            return true
+        end
+    end
+    return false
+end
+
+function AutoBuyMelee()
+    spawn(function()
+        while _G.AutoMelee do
+            local Beli = GetBeli()
+            local Fragments = GetFragments()
+            local Level = GetPlayerLevel()
+            local Sea = CheckSea()
+            
+            -- Sea 1 Melee
+            if Sea == 1 then
+                if Beli >= 150000 and not HasMelee("Dark Step") then
+                    TeleportTo(CFrame.new(-1160.17, 15.13, 3924.98))
+                    task.wait(2)
+                    pcall(function()
+                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyBlackLeg")
+                    end)
+                end
+                
+                if Beli >= 500000 and HasMelee("Dark Step") and GetMeleeMastery("Dark Step") >= 400 and not HasMelee("Electric") then
+                    TeleportTo(CFrame.new(-4730.36, 716.60, -2533.04))
+                    task.wait(2)
+                    pcall(function()
+                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyElectro")
+                    end)
+                end
+                
+                if Beli >= 750000 and not HasMelee("Water Kung Fu") then
+                    TeleportTo(CFrame.new(61122.56, 18.47, 1568.12))
+                    task.wait(2)
+                    pcall(function()
+                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyFishmanKarate")
+                    end)
+                end
+            end
+            
+            -- Sea 2 Melee
+            if Sea >= 2 then
+                if Fragments >= 1500 and not HasMelee("Dragon Breath") then
+                    TeleportTo(CFrame.new(-1034.42, 329.11, -10129.64))
+                    task.wait(2)
+                    pcall(function()
+                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyDragonBreath")
+                    end)
+                end
+            end
+            
+            task.wait(10)
+        end
+    end)
+end
+
+-- =============================================
+-- 🔄 AUTO RAID SYSTEM
+-- =============================================
+function AutoRaid()
+    spawn(function()
+        while _G.AutoRaid do
+            local fragments = GetFragments()
+            if fragments < 10000 then
+                -- Check if any raid fruit available
+                pcall(function()
+                    -- This is a placeholder for actual raid logic
+                    print("Checking for raid fruits...")
+                end)
+            else
+                _G.AutoRaid = false
+                print("10,000 Fragments collected!")
+            end
+            task.wait(30)
+        end
+    end)
+end
+
+-- =============================================
+-- 🎲 AUTO RANDOM FRUIT
+-- =============================================
+function AutoRandomFruit()
+    spawn(function()
+        while _G.AutoRandomFruit do
+            if GetPlayerLevel() >= 50 then
+                pcall(function()
+                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("Cousin", "Buy")
+                end)
+                print("Random fruit used")
+            end
+            task.wait(7200) -- 2 hours
+        end
+    end)
+end
+
+-- =============================================
+-- 🏆 AUTO ELITE BOSS
+-- =============================================
+function AutoEliteBoss()
+    spawn(function()
+        while _G.AutoElite do
+            if CheckSea() == 3 then
+                pcall(function()
+                    local elite = Workspace:FindFirstChild("EliteHunter")
+                    if elite then
+                        _G.AutoFarm = false
+                        task.wait(1)
+                        
+                        print("Elite Boss Detected!")
+                        
+                        while elite and elite:FindFirstChild("Humanoid") and elite.Humanoid.Health > 0 do
+                            EquipTool("Melee")
+                            TeleportTo(elite.HumanoidRootPart.CFrame * CFrame.new(0, 0, 5))
+                            Attack()
+                            task.wait(0.5)
+                        end
+                        
+                        _G.AutoFarm = true
+                        print("Elite Boss Defeated!")
+                    end
+                end)
+            end
+            task.wait(5)
+        end
+    end)
+end
+
+-- =============================================
+-- 🎸 AUTO SOUL GUITAR
+-- =============================================
+function AutoSoulGuitar()
+    spawn(function()
+        while _G.AutoSoulGuitar do
+            local Level = GetPlayerLevel()
+            if Level >= 2300 then
+                print("Starting Soul Guitar Quest...")
+                -- Add actual quest logic here
+                _G.AutoSoulGuitar = false
+            end
+            task.wait(30)
+        end
+    end)
+end
+
+-- =============================================
+-- ⚔️ AUTO CDK
+-- =============================================
+function AutoCDK()
+    spawn(function()
+        while _G.AutoCDK do
+            local Level = GetPlayerLevel()
+            if Level >= 2200 then
+                print("Starting CDK Quest...")
+                -- Add actual quest logic here
+                _G.AutoCDK = false
+            end
+            task.wait(30)
+        end
+    end)
+end
+
+-- =============================================
+-- 💀 AUTO BONE FARM
+-- =============================================
+function AutoBoneFarm()
+    spawn(function()
+        while _G.AutoBoneFarm do
+            if CheckSea() == 3 then
+                TeleportTo(CFrame.new(-9514.78, 142.14, 5525.94)) -- Haunted Castle
+                AttackNPCs()
+            end
+            task.wait(0.1)
+        end
+    end)
+end
+
+-- =============================================
+-- 👻 AUTO ECTOPLASM FARM
+-- =============================================
+function AutoEctoplasmFarm()
+    spawn(function()
+        while _G.AutoEctoplasmFarm do
+            if CheckSea() == 2 then
+                TeleportTo(CFrame.new(913.37, 125.22, 33554.5)) -- Ship
+                AttackNPCs()
+            end
+            task.wait(0.1)
+        end
+    end)
+end
+
+-- =============================================
+-- 📜 AUTO CODE REDEEM
+-- =============================================
+function RedeemAllCodes()
+    local codes = {
+        "KITT_RESET", "SUB2GAMERROBOT_RESET1", "SUB2UNCLEKIZARU",
+        "ADMINHACKED", "LIGHTNINGABUSE", "SUB2GAMERROBOT_EXP1",
+        "KITTGAMING", "SUB2OFFICIALNOOBIE", "SUB2CAPTAINMAUI",
+        "SUB2FER999", "ENYU_IS_PRO", "MAGICBUS", "STARCODEHEO",
+        "BLUXXY", "THEGREATACE", "AXIORE", "STRAWHATMAINE",
+        "1LOSTADMIN", "BIGNEWS", "FUDD10_V2", "FUDD10", "CHANDLER"
+    }
+    
+    for _, code in pairs(codes) do
+        pcall(function()
+            game:GetService("ReplicatedStorage").Remotes.Redeem:InvokeServer(code)
+        end)
+        task.wait(1)
+    end
+    print("All codes redeemed!")
+end
+
+-- =============================================
+-- 🌐 SERVER HOP
+-- =============================================
+function HopServer()
+    local Http = game:GetService("HttpService")
+    local TPS = game:GetService("TeleportService")
+    local API = "https://games.roblox.com/v1/games/%s/servers/Public?sortOrder=%s&limit=%s"
+    
+    local function GetServers(PlaceID, SortOrder, Limit)
+        return Http:JSONDecode(game:HttpGet(API:format(PlaceID, SortOrder, Limit))).data
+    end
+    
+    local Servers = GetServers(game.PlaceId, "Desc", 100)
+    for _, v in ipairs(Servers) do
+        if v.playing < v.maxPlayers and v.id ~= game.JobId then
+            TPS:TeleportToPlaceInstance(game.PlaceId, v.id, Player)
+            break
+        end
+    end
+end
+
+function AutoSeaHop()
+    spawn(function()
+        while _G.AutoSeaHop do
+            task.wait(math.random(1800, 3600)) -- 30-60 minutes
+            print("Auto server hopping...")
+            HopServer()
+        end
+    end)
+end
+
+-- =============================================
+-- 🚀 START EVERYTHING
+-- =============================================
+print("🔥 Haiiz Kaitun Ultimate - Full Auto Mode")
+print("🎮 Starting all systems...")
+
+-- Start all systems
+AutoFarmLevel()
+AutoStats()
+AutoBuyMelee()
+AutoRaid()
+AutoRandomFruit()
+AutoEliteBoss()
+AutoSoulGuitar()
+AutoCDK()
+AutoBoneFarm()
+AutoEctoplasmFarm()
+AutoSeaHop()
+
+-- Redeem codes on start
+task.wait(5)
+RedeemAllCodes()
+
+print("✅ All systems started successfully!")
+print("📊 Level: " .. GetPlayerLevel())
+print("💰 Beli: " .. GetBeli())
+print("💎 Fragments: " .. GetFragments())
+print("🌊 Sea: " .. CheckSea())
+
+-- Status monitor
+spawn(function()
+    while task.wait(10) do
+        print("\n📊 STATUS UPDATE:")
+        print("Level: " .. GetPlayerLevel())
+        print("Beli: " .. GetBeli())
+        print("Fragments: " .. GetFragments())
+        print("Sea: " .. CheckSea())
+        print("AutoFarm: " .. tostring(_G.AutoFarm))
+        print("AutoStats: " .. tostring(_G.AutoStats))
+    end
+end)
+
+-- Auto restart if character dies
+spawn(function()
+    while task.wait(1) do
+        if Character and Character:FindFirstChild("Humanoid") then
+            if Character.Humanoid.Health <= 0 then
+                print("💀 Character died, waiting respawn...")
+                task.wait(5)
+                Character = Player.Character or Player.CharacterAdded:Wait()
+                HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+                print("✅ Character respawned!")
+            end
+        end
+    end
+end)
